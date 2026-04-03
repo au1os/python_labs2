@@ -16,8 +16,8 @@ def main():
     # Сравнение двух объектов (проверка __eq__)
     print("\n2. Сравнение квартир:")
     apar3 = Apartment(45.5, 80000, "ул. Ленина, д.10, кв.5", 10)  # такой же адрес и площадь
-    print(f"apt1 == apt3? {apar1 == apar3}")  # True
-    print(f"apt1 == apt2? {apar1 == apar2}")  # False
+    print(f"apar1 == apar3? {apar1 == apar3}")  # True
+    print(f"apar1 == apar2? {apar1 == apar2}")  # False
 
     # Некорректное создание с try except
     print("\n3. Некорректное создание квартиры (площадь <=0):")
@@ -51,15 +51,15 @@ def main():
 
     # Бизнес-методы
     print("\n6. Бизнес-методы:")
-    print(f"  Ежемесячный платёж для apt1: {apar1.calculate_monthly_payment():.2f} руб.")
-    print(f"  apt1 дороже 100000 руб? {apar1.is_expensive(100000)}")
-    print(f"  apt2 дороже 100000 руб? {apar2.is_expensive(100000)}")
+    print(f"  Ежемесячный платёж для apar1: {apar1.calculate_monthly_payment():.2f} руб.")
+    print(f"  apar1 дороже 100000 руб? {apar1.is_expensive(100000)}")
+    print(f"  apar2 дороже 100000 руб? {apar2.is_expensive(100000)}")
 
     # Демо логического состояния и изменения поведения
     print("\n7. Демонстрация состояния 'арендована' и ограничений:")
-    print("  Арендуем apt1...")
+    print("  Арендуем apar1...")
     apar1.rent()          # меняем состояние
-    print(f"  Статус apt1: {'Арендована' if apar1.is_rented else 'Свободна'}")
+    print(f"  Статус apar1: {'Арендована' if apar1.is_rented else 'Свободна'}")
 
     print("\n  Попытка изменить цену арендованной квартиры (должна быть ошибка):")
     try:
@@ -75,7 +75,7 @@ def main():
 
     print("\n  Освобождаем apar1...")
     apar1.vacate()
-    print(f"  Статус apt1: {'Арендована' if apar1.is_rented else 'Свободна'}")
+    print(f"  Статус apar1: {'Арендована' if apar1.is_rented else 'Свободна'}")
 
     print("\n  Теперь цена снова изменяема:")
     apar1.price = 90000
