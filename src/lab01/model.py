@@ -104,8 +104,7 @@ class Apartment:
             return False
         return self._address == other._address and self._area == other._area
 
-    # ----- Метод для доступа к атрибуту класса (демонстрация) -----
+    # Метод для атрибута класса
     @classmethod
     def get_total_apartments(cls) -> int:
-        """Возвращает общее количество созданных квартир."""
         return cls._total_apartments
