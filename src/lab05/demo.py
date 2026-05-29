@@ -7,6 +7,7 @@
 """
 
 from collection import ApartmentCollection
+from model import Apartment
 from strategies import (
     # Стратегии сортировки
     by_price, by_price_desc, by_area, by_area_desc, 

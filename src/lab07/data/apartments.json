@@ -1,0 +1,9 @@
+[
+  {
+    "area": 60.0,
+    "price": 120000.0,
+    "address": "ул. Центральная",
+    "rent_duration": 6,
+    "is_rented": false
+  }
+]

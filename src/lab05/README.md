@@ -135,3 +135,14 @@ result = (collection
 # Фабрика функций
 budget_filter = make_price_filter(100000)
 budget_apts = collection.filter_by(budget_filter)
+```
+
+### 8. Скриншоты работы программы
+
+![Сценарий 1](../../imagess/lab05/5-1.png)
+
+![Сценарий 2](../../imagess/lab05/5-2.png)
+
+![Сценарий 3](../../imagess/lab05/5-3.png)
+
+![Пример работы](../../imagess/lab05/5-4.png)

@@ -4,13 +4,6 @@
 """
 
 from typing import Callable, List, Any
-import sys
-from pathlib import Path
-
-# Добавляем путь к lab01 для импорта базового класса
-lab01_path = Path(__file__).parent.parent / "lab01"
-sys.path.insert(0, str(lab01_path))
-
 from model import Apartment
 
 
@@ -39,7 +32,7 @@ def by_price_desc(apartment: Apartment) -> float:
         apartment: Объект квартиры
         
     Returns:
-        float: Отрицательная цена (для сортировки по убыванию)
+        float: Отрицательная цена квартиры для сортировки по убыванию
     """
     return -apartment.price
 
@@ -65,7 +58,7 @@ def by_area_desc(apartment: Apartment) -> float:
         apartment: Объект квартиры
         
     Returns:
-        float: Отрицательная площадь (для сортировки по убыванию)
+        float: Отрицательная площадь квартиры для сортировки по убыванию
     """
     return -apartment.area
 
@@ -104,9 +97,9 @@ def by_address(apartment: Apartment) -> str:
         apartment: Объект квартиры
         
     Returns:
-        str: Адрес квартиры
+        str: Адрес квартиры в нижнем регистре
     """
-    return apartment.address
+    return apartment.address.lower()
 
 
 # ============================================================================
@@ -139,44 +132,44 @@ def is_rented(apartment: Apartment) -> bool:
     return apartment.is_rented
 
 
-def is_expensive(apartment: Apartment, threshold: float = 100000) -> bool:
+def is_expensive(apartment: Apartment, threshold: float) -> bool:
     """
-    Фильтр: проверка, дороже ли квартира заданного порога.
+    Фильтр: проверка, является ли квартира дорогой (дороже порога).
     
     Args:
         apartment: Объект квартиры
-        threshold: Порог стоимости (по умолчанию 100000)
+        threshold: Порог стоимости
         
     Returns:
-        bool: True если цена выше порога
+        bool: True если цена квартиры выше порога
     """
     return apartment.price > threshold
 
 
 def is_large(apartment: Apartment, min_area: float = 60.0) -> bool:
     """
-    Фильтр: проверка, является ли квартира большой (площадь >= min_area).
+    Фильтр: проверка, является ли квартира большой.
     
     Args:
         apartment: Объект квартиры
-        min_area: Минимальная площадь (по умолчанию 60.0 м²)
+        min_area: Минимальная площадь для больших квартир
         
     Returns:
-        bool: True если площадь >= min_area
+        bool: True если площадь квартиры больше или равна min_area
     """
     return apartment.area >= min_area
 
 
 def is_small(apartment: Apartment, max_area: float = 40.0) -> bool:
     """
-    Фильтр: проверка, является ли квартира маленькой (площадь <= max_area).
+    Фильтр: проверка, является ли квартира маленькой.
     
     Args:
         apartment: Объект квартиры
-        max_area: Максимальная площадь (по умолчанию 40.0 м²)
+        max_area: Максимальная площадь для маленьких квартир
         
     Returns:
-        bool: True если площадь <= max_area
+        bool: True если площадь квартиры меньше или равна max_area
     """
     return apartment.area <= max_area
 
@@ -190,27 +183,27 @@ def is_in_budget(apartment: Apartment, max_price: float) -> bool:
         max_price: Максимальная цена
         
     Returns:
-        bool: True if price <= max_price
+        bool: True если цена квартиры меньше или равна max_price
     """
     return apartment.price <= max_price
 
 
 def has_short_rent(apartment: Apartment, max_duration: int = 6) -> bool:
     """
-    Фильтр: проверка, короткий ли срок аренды.
+    Фильтр: проверка, является ли срок аренды коротким.
     
     Args:
         apartment: Объект квартиры
-        max_duration: Максимальный срок аренды в месяцах (по умолчанию 6)
+        max_duration: Максимальный срок для короткой аренды
         
     Returns:
-        bool: True if rent_duration <= max_duration
+        bool: True если срок аренды меньше или равен max_duration
     """
     return apartment.rent_duration <= max_duration
 
 
 # ============================================================================
-# Фабрики функций (функции высшего порядка, возвращающие функции)
+# Фабрики функций (функции высшего порядка)
 # ============================================================================
 
 def make_price_filter(max_price: float) -> Callable[[Apartment], bool]:
@@ -218,14 +211,14 @@ def make_price_filter(max_price: float) -> Callable[[Apartment], bool]:
     Фабрика функций: создаёт фильтр по максимальной цене.
     
     Args:
-        max_price: Максимальная допустимая цена
+        max_price: Максимальная цена
         
     Returns:
         Callable[[Apartment], bool]: Функция-фильтр
     """
-    def filter_fn(apartment: Apartment) -> bool:
+    def filter_func(apartment: Apartment) -> bool:
         return apartment.price <= max_price
-    return filter_fn
+    return filter_func
 
 
 def make_min_area_filter(min_area: float) -> Callable[[Apartment], bool]:
@@ -233,14 +226,14 @@ def make_min_area_filter(min_area: float) -> Callable[[Apartment], bool]:
     Фабрика функций: создаёт фильтр по минимальной площади.
     
     Args:
-        min_area: Минимальная допустимая площадь
+        min_area: Минимальная площадь
         
     Returns:
         Callable[[Apartment], bool]: Функция-фильтр
     """
-    def filter_fn(apartment: Apartment) -> bool:
+    def filter_func(apartment: Apartment) -> bool:
         return apartment.area >= min_area
-    return filter_fn
+    return filter_func
 
 
 def make_price_range_filter(min_price: float, max_price: float) -> Callable[[Apartment], bool]:
@@ -254,9 +247,9 @@ def make_price_range_filter(min_price: float, max_price: float) -> Callable[[Apa
     Returns:
         Callable[[Apartment], bool]: Функция-фильтр
     """
-    def filter_fn(apartment: Apartment) -> bool:
+    def filter_func(apartment: Apartment) -> bool:
         return min_price <= apartment.price <= max_price
-    return filter_fn
+    return filter_func
 
 
 def make_discount_strategy(discount_percent: float) -> Callable[[Apartment], float]:
@@ -264,24 +257,26 @@ def make_discount_strategy(discount_percent: float) -> Callable[[Apartment], flo
     Фабрика функций: создаёт стратегию расчёта цены со скидкой.
     
     Args:
-        discount_percent: Процент скидки (например, 10 для 10%)
+        discount_percent: Процент скидки
         
     Returns:
-        Callable[[Apartment], float]: Функция, возвращающая цену со скидкой
+        Callable[[Apartment], float]: Функция расчёта цены со скидкой
     """
-    def discount_fn(apartment: Apartment) -> float:
+    def discount_func(apartment: Apartment) -> float:
         return apartment.price * (1 - discount_percent / 100)
-    return discount_fn
+    return discount_func
 
 
 # ============================================================================
-# Стратегии обработки (callable-объекты)
+# Callable-объекты (паттерн "Стратегия")
 # ============================================================================
 
 class DiscountStrategy:
     """
-    Стратегия применения скидки к цене квартиры.
-    Реализует паттерн "Стратегия" через callable-объект.
+    Стратегия: применение скидки к цене квартиры.
+    
+    Атрибуты:
+        discount_percent (float): Процент скидки
     """
     
     def __init__(self, discount_percent: float):
@@ -289,98 +284,100 @@ class DiscountStrategy:
         Инициализация стратегии скидки.
         
         Args:
-            discount_percent: Процент скидки (например, 10 для 10%)
+            discount_percent: Процент скидки
         """
-        self._discount_percent = discount_percent
+        self.discount_percent = discount_percent
     
-    def __call__(self, item: Apartment) -> float:
+    def __call__(self, apartment: Apartment) -> float:
         """
         Применение скидки к квартире.
         
         Args:
-            item: Объект квартиры
+            apartment: Объект квартиры
             
         Returns:
             float: Цена со скидкой
         """
-        return item.price * (1 - self._discount_percent / 100)
+        return apartment.price * (1 - self.discount_percent / 100)
     
-    def __repr__(self) -> str:
-        return f"DiscountStrategy({self._discount_percent}%)"
+    def __str__(self) -> str:
+        return f"DiscountStrategy({self.discount_percent}%)"
 
 
 class MonthlyPaymentStrategy:
     """
-    Стратегия расчёта ежемесячного платежа.
-    Реализует паттерн "Стратегия" через callable-объект.
+    Стратегия: расчёт ежемесячного платежа.
     """
     
-    def __call__(self, item: Apartment) -> float:
+    def __call__(self, apartment: Apartment) -> float:
         """
         Расчёт ежемесячного платежа.
         
         Args:
-            item: Объект квартиры
+            apartment: Объект квартиры
             
         Returns:
             float: Ежемесячный платёж
         """
-        return item.calculate_monthly_payment()
+        return apartment.calculate_monthly_payment()
     
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return "MonthlyPaymentStrategy()"
 
 
 class PricePerSqmStrategy:
     """
-    Стратегия расчёта цены за квадратный метр.
-    Реализует паттерн "Стратегия" через callable-объект.
+    Стратегия: расчёт цены за квадратный метр.
     """
     
-    def __call__(self, item: Apartment) -> float:
+    def __call__(self, apartment: Apartment) -> float:
         """
         Расчёт цены за квадратный метр.
         
         Args:
-            item: Объект квартиры
+            apartment: Объект квартиры
             
         Returns:
-            float: Цена за м²
+            float: Цена за квадратный метр
         """
-        return item.price / item.area
+        return apartment.price / apartment.area
     
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return "PricePerSqmStrategy()"
 
 
 class AddressFormatter:
     """
-    Стратегия форматирования адреса.
-    Реализует паттерн "Стратегия" через callable-объект.
+    Стратегия: форматирование адреса.
+    
+    Атрибуты:
+        short (bool): Если True, возвращает короткую версию адреса
     """
     
     def __init__(self, short: bool = False):
         """
-        Инициализация форматтера.
+        Инициализация форматтера адресов.
         
         Args:
-            short: Если True, возвращать короткий формат
+            short: Если True, возвращает короткую версию адреса
         """
-        self._short = short
+        self.short = short
     
-    def __call__(self, item: Apartment) -> str:
+    def __call__(self, apartment: Apartment) -> str:
         """
         Форматирование адреса.
         
         Args:
-            item: Объект квартиры
+            apartment: Объект квартиры
             
         Returns:
             str: Форматированный адрес
         """
-        if self._short:
-            return item.address.split(',')[0]
-        return item.address
+        if self.short:
+            # Короткий формат: только улица
+            parts = apartment.address.split(',')
+            return parts[0].strip() if parts else apartment.address
+        return apartment.address
     
-    def __repr__(self) -> str:
-        return f"AddressFormatter(short={self._short})"
+    def __str__(self) -> str:
+        return f"AddressFormatter(short={self.short})"
